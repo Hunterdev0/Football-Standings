@@ -7,8 +7,8 @@ import { StandingsRes } from '../models/standings';
 
 @Injectable({ providedIn: 'root' })
 export class FootballApiService {
-  private cacheStandings: { [url: string]: Object } = {};
-  private cacheFixtures: { [url: string]: Object } = {};
+  private cacheStandings: { [url: string]: StandingsRes } = {};
+  private cacheFixtures: { [url: string]: FixturesRes } = {};
   constructor(private http: HttpClient) {}
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -17,7 +17,7 @@ export class FootballApiService {
     });
   }
 
-  getLeagueStandings(leagueId: number, season: number): Observable<Object> {
+  getLeagueStandings(leagueId: number, season: number): Observable<StandingsRes> {
     const headers = this.getHeaders();
     const url = `${environment.apiUrl}/standings?season=${season}&league=${leagueId}`;
     if (this.cacheStandings[url]) {
@@ -30,7 +30,7 @@ export class FootballApiService {
       );
     }
   }
-  getTeamFixtures(teamId: number, league: number): Observable<Object> {
+  getTeamFixtures(teamId: number, league: number): Observable<FixturesRes> {
     const headers = this.getHeaders();
     const url = `${environment.apiUrl}/fixtures?team=${teamId}&league=${league}&last=10&status=FT`;
     if (this.cacheFixtures[url]) {
